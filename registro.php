@@ -109,7 +109,7 @@
 	</div>
 
 	<div class="col-xs-12 col-sm-12 col-md-6">
-	<form class="form-horizontal">
+	<form action="registro_recibir.php" method="post" class="form-horizontal" enctype="multipart/form-data">
 		<div class="form-group">
 			<label>Nombre
 				<input class="form-control" type="text" id="nombre" name="nombre">
@@ -136,9 +136,14 @@
 		</div>
 		<div class="form-group">		
 			<label>Dejate ver, introduce tu fotografía
-				<input class="form-control" type="file" id="pic" name="pic" accept="image/*">
+				<input class="form-control" type="file" id="pic" name="pic" >
 			</label>
 		</div>
+		<div class="form-group center-block">		
+	        <button type="submit" class="btn btn-default">Aceptar</button>
+	        <button type="reset" class="btn btn-default">Cancelar</button>
+		</div>
+
 	</form>
 	</div>
 </div>
