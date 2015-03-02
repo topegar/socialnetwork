@@ -1,0 +1,17 @@
+body { padding-top: 70px; }
+
+.center{
+	text-align: center;
+}
+
+.divmargin{
+	margin: 1em 0em;
+	
+}
+
+.divmargin p{
+	text-align: justify;
+	background-color: #eeeeFF;
+	border-radius: 10px;
+	padding: 1em;
+}
