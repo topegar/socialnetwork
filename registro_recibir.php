@@ -1,40 +1,42 @@
 <?php
-
-if($_POST['nombre'])
+/*
+ 
+*/
+if(isset($_POST['nombre']) && isset($_POST['apellidos'])
+	&& isset($_POST['email']) && isset($_POST['emailrep'])
+	&& isset($_POST['pass']) && isset($_POST['passrep']))
 {
 	$nombre = $_POST['nombre'];
-}
-
-if($_POST['apellidos'])
-{
 	$apellidos = $_POST['apellidos'];	
+	$email = $_POST['email'];
+	$emailrep = $_POST['emailrep'];
+	$pass = $_POST['pass'];	
+	$passrep = $_POST['passrep'];
+
+	echo "<p>Los datos bien</p>";
 }
-
-if($_POST['e-mail'])
-{
-	$e-mail = $_POST['e-mail'];
+else{
+	echo "<p>Error en la recepcion de datos</p>";
 }
-
-if($_POST['e-mailrep'])
-{
-	$e-mailrep = $_POST[e-mailrep];
-}
-
-if($_POST['pass'])
-{
-	$pass = $_POST[pass];	
-}
-
-if($_POST['passrep'])
-{
-	$passrep = $_POST[passrep];
-}
-
-
 
 if($_FILES['pic']['error'] == 0)
 {
-	move_uploaded_file($_FILES['pic']['tmp_name'],
-		"images_user/".$_FILES['pic']['name']);
+	if($_FILES['pic']['type'] == "image/jpeg"
+		|| $_FILES['pic']['type'] == "image/png")
+	{
+
+		move_uploaded_file($_FILES['pic']['tmp_name'],
+			"images_user/".$_FILES['pic']['name']);
+
+		echo "<p>El archivo bien</p>";
+	}
+	else
+	{
+		echo "<p>El tipo del archivo no es el correcto</p>";		
+	}
+}
+else
+{
+	echo "<p>Error en la recepcion del archivo</p>";
 }
 ?>

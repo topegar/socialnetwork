@@ -14,6 +14,7 @@
 			//obtener datos del usuario
 			$iduser = 1; 
 			$nombre = "Tomas";
+			$foto = "foto.jpg";
 		}
 	}
 ?>
@@ -21,7 +22,10 @@
 <html>
 <head>
 	<title></title>
-</head>
+
+	<script type="text/javascript">
+
+	</script>
 
 	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="./css/estilos.css">
@@ -30,6 +34,8 @@
 	<script src="./bootstrap/js/bootstrap.min.js"></script>
 				 
 	<script type="text/javascript" src="js/validar.js"></script>
+
+</head>
 
 <body>
 <div class="container">
@@ -86,9 +92,17 @@
 		        <li><a href="#">Page 3</a></li>
 		      </ul>
 		    </div>
-			<div class="navbar-text pull-right">
-			  	<span class="">Hola <?php echo $nombre; ?></span>
-			  	<span class=""><a href="index.php" class="navbar-link">(Cerrar sesión)</a></span>
+			<div  class="pull-right">
+			  <ul class="nav navbar-nav">
+					<?php  
+					if(file_exists("images_user/".$foto))
+					{
+						echo "<li><img class='navbar-brand' src='images_user/foto.jpg'></li>";
+					}
+					?>
+					<li class="navbar-text">Hola <?php echo $nombre; ?></li>
+					<li class=""><a href="index.php" class="navbar-link">(Cerrar sesión)</a></li>
+			  </ul>
 			</div>		    
 
 			<?php
@@ -109,7 +123,10 @@
 	</div>
 
 	<div class="col-xs-12 col-sm-12 col-md-6">
-	<form action="registro_recibir.php" method="post" class="form-horizontal" enctype="multipart/form-data">
+	<form action="registro_recibir.php" method="post" 
+		class="form-horizontal" 
+		enctype="multipart/form-data"
+		onsubmit="return validar_registro()">
 		<div class="form-group">
 			<label>Nombre
 				<input class="form-control" type="text" id="nombre" name="nombre">
@@ -120,10 +137,10 @@
 		</div>
 		<div class="form-group">
 			<label>e-mail
-				<input class="form-control" type="text" id="e-mail" name="e-mail">
+				<input class="form-control" type="text" id="email" name="email">
 			</label>
 			<label>Repite e-mail
-				<input class="form-control" type="text" id="e-mailrep" name="e-mailrep">
+				<input class="form-control" type="text" id="emailrep" name="emailrep">
 			</label>
 		</div>
 		<div class="form-group">		
@@ -136,7 +153,7 @@
 		</div>
 		<div class="form-group">		
 			<label>Dejate ver, introduce tu fotografía
-				<input class="form-control" type="file" id="pic" name="pic" >
+				<input type="file" accept="image/jpeg, image/png" id="pic" name="pic" class="form-control">
 			</label>
 		</div>
 		<div class="form-group center-block">		

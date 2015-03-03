@@ -19,3 +19,38 @@ function validarlogin()
 
 	return true;
 }
+
+/*****************************************************************/
+
+function validar_imagen_usuario()
+{
+	var imagen;
+
+	imagen = document.getElementById('pic').value;
+
+	//alert(imagen.substring(imagen.lastIndexOf('.')).toLowerCase());
+
+	switch(imagen.substring(imagen.lastIndexOf('.')).toLowerCase())
+	{
+        case '.jpg': 
+        case '.jpeg':
+        case '.png':
+        	return true;
+        default:
+        	return false;
+	}
+
+    return false;
+}
+
+function validar_registro()
+{
+	var correcto;
+
+	if(!validar_imagen_usuario())
+	{
+		false;
+	}
+
+	return true;
+}

@@ -14,6 +14,7 @@
 			//obtener datos del usuario
 			$iduser = 1; 
 			$nombre = "Tomas";
+			$foto = "foto.jpg";
 		}
 	}
 ?>
@@ -87,9 +88,17 @@
 		        <li><a href="#">Page 3</a></li>
 		      </ul>
 		    </div>
-			<div class="navbar-text pull-right">
-			  	<span class="">Hola <?php echo $nombre; ?></span>
-			  	<span class=""><a href="index.php" class="navbar-link">(Cerrar sesión)</a></span>
+			<div  class="pull-right">
+			  <ul class="nav navbar-nav">
+					<?php  
+					if(file_exists("images_user/".$foto))
+					{
+						echo "<li><img class='navbar-brand' src='images_user/foto.jpg'></li>";
+					}
+					?>
+					<li class="navbar-text">Hola <?php echo $nombre; ?></li>
+					<li class=""><a href="index.php" class="navbar-link">(Cerrar sesión)</a></li>
+			  </ul>
 			</div>		    
 
 			<?php
