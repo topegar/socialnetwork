@@ -1,6 +1,15 @@
 <?php 
-	$iduser = -1;
 
+	session_start();
+
+	/*si no existe la variable se crea y se fija a -1
+	valor que sirve de referencia para decir que 
+	ningún usuario ha intruducido su mail y password*/
+	if(!isset($_SESSION['iduser']))
+		$_SESSION['iduser'] = -1;	
+
+	/*el usuario esta intentando logarse
+	hay que comprobar su mail y su password*/
 	if(isset($_REQUEST["mail"]) 	
 		&& isset($_REQUEST["password"]))
 	{
@@ -12,10 +21,14 @@
 			&& $pass == "123asd")
 		{
 			//obtener datos del usuario
-			$iduser = 1; 
-			$nombre = "Tomas";
-			$foto = "foto.jpg";
+			$_SESSION['iduser'] = 1; 
 		}
+	}
+
+	if($_SESSION['iduser'] == 1)
+	{
+		$nombre = "Tomas";
+		$foto = "foto.jpg";
 	}
 ?>
 
@@ -52,7 +65,7 @@
 
 
 			<?php
-			if($iduser == -1)
+			if($_SESSION['iduser'] == -1)
 			{
 			?>
 
@@ -97,7 +110,7 @@
 					}
 					?>
 					<li class="navbar-text">Hola <?php echo $nombre; ?></li>
-					<li class=""><a href="index.php" class="navbar-link">(Cerrar sesión)</a></li>
+					<li class=""><a href="index.php?cerrar=yes" class="navbar-link">(Cerrar sesión)</a></li>
 			  </ul>
 			</div>		    
 
