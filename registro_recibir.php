@@ -2,6 +2,11 @@
 /*
  
 */
+function validar_registro()
+{
+
+}
+
 if(isset($_POST['nombre']) && isset($_POST['apellidos'])
 	&& isset($_POST['email']) && isset($_POST['emailrep'])
 	&& isset($_POST['pass']) && isset($_POST['passrep']))

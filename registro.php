@@ -8,15 +8,20 @@
 		$nombre = "Tomas";
 		$apellidos = "Perez Garcia";
 		$email = "topegar@gmail.com";
+		$pass = "123asd";
+		$foto = "foto.jpg";
 	}
 	else
 	{
 		$nombre = "";
 		$apellidos = "";
-		$email = "";		
+		$email = "";	
+		$pass = "";	
+		$foto = "";
 	}
-?>
 
+?>
+	
 
 	<div class="col-xs-12 col-sm-12 col-md-6">
 		<img src="images/bolasn.jpg" class="img-responsive img-thumbnail" >
@@ -48,16 +53,37 @@
 		</div>
 		<div class="form-group">		
 			<label>Contraseña
-				<input class="form-control" type="text" id="pass" name="pass">
+				<input class="form-control" type="password" id="pass" name="pass" value="<?php echo $pass?>">
 			</label>
 			<label>Repite la contraseña
-				<input class="form-control" type="text" id="passrep" name="passrep">
+				<input class="form-control" type="text" id="passrep" name="passrep" value="">
 			</label>
 		</div>
-		<div class="form-group">		
-			<label>Dejate ver, introduce tu fotografía
-				<input type="file" accept="image/jpeg, image/png" id="pic" name="pic" class="form-control">
-			</label>
+		<div class="form-group">	
+			<div class="row">	
+				<?php 
+				if($foto != "")
+				{
+				?>
+				<div class="col-xs-12 col-sm-12 col-md-3">
+					<img class="imgform img-rounded img-responsive " src="images_user/<?php echo $foto; ?>" >
+				</div>
+				<?php 
+				}
+				?>
+				
+				<div class="col-xs-12 col-sm-12 col-md-9">
+					<label>
+						<?php
+						if($foto!="")  
+							echo "Cambia tu fotografia";
+						else
+							echo "Dejate ver, introduce tu fotografía";
+						?>
+						<input type="file" accept="image/jpeg, image/png" id="pic" name="pic" class="form-control" value="">
+					</label>
+				</div>
+			</div>
 		</div>
 		<div class="form-group center-block">		
 	        <button type="submit" class="btn btn-default">Aceptar</button>

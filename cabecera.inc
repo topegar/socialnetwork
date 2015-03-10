@@ -132,6 +132,7 @@
 					<?php  
 					if(file_exists("images_user/".$foto))
 					{
+						//navbar-brand
 						echo "<li><img class='navbar-brand' src='images_user/foto.jpg'></li>";
 					}
 					?>

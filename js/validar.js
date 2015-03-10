@@ -1,18 +1,35 @@
+function validar_email(email)
+{
+	var expregmail = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/;
+
+	if(!expregmail.test(email))		
+		return false;
+
+	return true;
+}
+
+function validar_password(pass)
+{
+	var expregpass = /^[A-Za-z0-9]{6,10}$/;
+
+	if(!expregpass.test(pass))
+		return false;
+
+	return true;
+}
+
 function validarlogin()
 {
-	var mail = document.getElementById("mail").value;
+	var email = document.getElementById("mail").value;
 	var pass = document.getElementById("password").value;
-
-	var expregmail = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/;
-	var expregpass = /^[A-Za-z0-9]{6,10}$/;
 
 	//alert(mail);
 	//alert(pass);
 
-	if(!expregmail.test(mail))		
+	if(email == "")		
 		return false;
 
-	if(!expregpass.test(pass))
+	if(pass == "")
 		return false;
 
 	//alert("envio");
@@ -45,12 +62,36 @@ function validar_imagen_usuario()
 
 function validar_registro()
 {
-	var correcto;
+	var nombre = document.getElementById("nombre").value;
+	if(nombre.length<=0)
+		return false;
+
+	var apellidos = document.getElementById("apellidos").value;
+	if(apellidos.length <= 0)
+		return false;
+
+	var email = document.getElementById("email").value;
+	if(!validar_email(email))
+		return false;
+
+	var emailrep = document.getElementById("emailrep").value;
+	if(email!=emailrep)
+		return false;
+
+	var pass = document.getElementById("pass").value;
+	if(!validar_password(pass))
+		return false;
+
+	var passrep = document.getElementById("passrep").value;
+	if(pass != passrep)
+		return false;
 
 	if(!validar_imagen_usuario())
 	{
-		false;
+		return false;
 	}
+
+
 
 	return true;
 }
