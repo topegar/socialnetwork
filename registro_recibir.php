@@ -2,9 +2,47 @@
 /*
  
 */
+function validar_email($email)
+{
+	$patron = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/";
+
+	if(!preg_match($patron, $email))		
+		return false;
+
+	return true;
+}
+
+function validar_password($pass)
+{
+	$patron = "/^[A-Za-z0-9]{6,10}$/";
+
+	if(!preg_match($patron, $pass))
+		return false;
+
+	return true;
+}
+
 function validar_registro()
 {
+	if($nombre == "")
+		return false;
 
+	if($apellidos == "")
+		return false;
+
+	if(!validar_email($email))
+		return false;
+
+	if($email != $emailrep)
+		return false;
+
+	if(!validar_password($pass))
+		return false;
+
+	if($pass != $passrep)
+		return false;
+
+	return true;
 }
 
 if(isset($_POST['nombre']) && isset($_POST['apellidos'])
@@ -43,5 +81,14 @@ if($_FILES['pic']['error'] == 0)
 else
 {
 	echo "<p>Error en la recepcion del archivo</p>";
+}
+
+if(!validar_registro())
+{
+	echo "Error en la validacion de los datos";
+}
+else
+{
+	echo "Todo correcto, saltar a la página index con usuario logado";
 }
 ?>
