@@ -1,4 +1,7 @@
 <?php 
+	require_once("define.php");
+	require_once("phpDB/conexion.php");
+	require_once("phpDB/tablausuarios.php");
 
 	session_start();
 
@@ -39,22 +42,32 @@
 	if(isset($_REQUEST["mail"]) 	
 		&& isset($_REQUEST["password"]))
 	{
-		$mail = $_REQUEST["mail"];
+		$email = $_REQUEST["mail"];
 		$pass = $_REQUEST["password"];
 
 		//comprobar que el mail y el pass existen
-		if($mail == "topegar@gmail.com" 
-			&& $pass == "123asd")
+		$link = abrirconexion();
+		$idusuario = getidusuariobyemailpass($link, $email, $pass);
+		if($idusuario)
 		{
 			//obtener datos del usuario
-			$_SESSION['iduser'] = 1; 
+			$_SESSION['iduser'] = $idusuario; 
 		}
+		cerrarconexion($link);
 	}
 
-	if($_SESSION['iduser'] == 1)
+	if($_SESSION['iduser'] != -1)
 	{
-		$nombre = "Tomas";
-		$foto = "foto.jpg";
+		
+		$link = abrirconexion();
+
+		$nombre = getnombreusuariobyid($link, $_SESSION['iduser']);
+		$foto = getfotousuariobyid($link, $_SESSION['iduser']);
+
+		/*$nombre = "Tomas";
+		$foto = "foto.jpg";*/
+
+		cerrarconexion($link);
 	}
 ?>
 
@@ -130,10 +143,11 @@
 			<div  class="pull-right">
 			  <ul class="nav navbar-nav">
 					<?php  
-					if(file_exists("images_user/".$foto))
+					if(file_exists(USER_FOLDER."/".$foto))
 					{
 						//navbar-brand
-						echo "<li><img class='navbar-brand' src='images_user/foto.jpg'></li>";
+						echo "<li><img class='navbar-brand' src='"
+							.USER_FOLDER."/$foto'></li>";
 					}
 					?>
 					<li class=""><a href="registro.php" class="navbar-link">Hola <?php echo $nombre; ?></a></li>

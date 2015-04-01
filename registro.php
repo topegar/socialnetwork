@@ -3,6 +3,7 @@
 
 	//echo "usuario: " .$_SESSION['iduser'];
 
+
 	if($_SESSION['iduser'] == 1)
 	{
 		$nombre = "Tomas";
@@ -46,7 +47,7 @@
 				<input class="form-control" type="text" id="email" name="email"
 					value="<?php echo $email?>">
 			</label>
-			<label>Repite e-mail
+			<label>Confirmar e-mail
 				<input class="form-control" type="text" id="emailrep" name="emailrep"
 					value="<?php echo $email?>">
 			</label>
@@ -55,7 +56,7 @@
 			<label>Contraseña
 				<input class="form-control" type="password" id="pass" name="pass" value="<?php echo $pass?>">
 			</label>
-			<label>Repite la contraseña
+			<label>Confirmar contraseña
 				<input class="form-control" type="text" id="passrep" name="passrep" value="">
 			</label>
 		</div>

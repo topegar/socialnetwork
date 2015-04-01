@@ -40,11 +40,17 @@ function validarlogin()
 /*****************************************************************/
 
 function validar_imagen_usuario()
-{
-	var imagen;
+{	
+	/*
+	var input = document.getElementById('pic');
+	var imagen = input.value;
+	var file = input.files[0];
 
-	imagen = document.getElementById('pic').value;
-
+	alert(file.size);
+	*/
+	var imagen = document.getElementById('pic').value;
+	if(imagen == "")
+		return true;
 	//alert(imagen.substring(imagen.lastIndexOf('.')).toLowerCase());
 
 	switch(imagen.substring(imagen.lastIndexOf('.')).toLowerCase())

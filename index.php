@@ -8,21 +8,7 @@
 		<h1>Página principal de mi molona red social</h1>
 	</div>
 
-	<!--
-	<?php 
-	if($_SESSION['iduser'] == 1)
-	{
-	?>
-	<div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-12 divmargin">
-		<p>El usuario <?php echo $nombre;?> se ha logado
-		</p>
-		</div>
-	<?php
-	}
-	?>
-	-->
-	
+		
 	<div class="row">
 		<div class="col-xs-12 col-sm-6 col-md-3 divmargin">
 			<p>Noticia 1 de mi red social que habla de ...
