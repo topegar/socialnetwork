@@ -3,22 +3,44 @@
 
 	//echo "usuario: " .$_SESSION['iduser'];
 
+	$nombre = "";
+	$apellidos = "";
+	$email = "";	
+	$pass = "";	
+	$foto = "";
 
-	if($_SESSION['iduser'] == 1)
+	//echo "<p>sesion:" . $_SESSION['iduser'] . "</p>";
+
+	if($_SESSION['iduser'] != -1)
 	{
-		$nombre = "Tomas";
-		$apellidos = "Perez Garcia";
-		$email = "topegar@gmail.com";
-		$pass = "123asd";
-		$foto = "foto.jpg";
-	}
-	else
-	{
-		$nombre = "";
-		$apellidos = "";
-		$email = "";	
-		$pass = "";	
-		$foto = "";
+		//echo "Dentro 1";
+		$link = abrirconexion();
+		if($link)
+		{
+
+			//echo "Dentro 2";
+
+			$fila = getdatosusuariobyid($link, $_SESSION['iduser']);
+			
+			//echo "fila: $fila";
+
+			if($fila)
+			{
+				//echo "Dentro 3";
+
+				$nombre = $fila['nombre'];
+				$apellidos = $fila['apellidos'];
+				$email = $fila['email'];
+				$pass = $fila['password'];
+				$foto = $fila['foto'];
+			}
+
+			cerrarconexion($link);
+		}
+		else
+		{
+			echo "Error en la conexión a la BD";		
+		}
 	}
 
 ?>
@@ -67,7 +89,8 @@
 				{
 				?>
 				<div class="col-xs-12 col-sm-12 col-md-3">
-					<img class="imgform img-rounded img-responsive " src="images_user/<?php echo $foto; ?>" >
+					<img class="imgform img-rounded img-responsive " 
+						src='<?php echo USER_FOLDER ."/". $foto; ?>' >
 				</div>
 				<?php 
 				}

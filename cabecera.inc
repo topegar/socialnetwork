@@ -53,8 +53,12 @@
 			//obtener datos del usuario
 			$_SESSION['iduser'] = $idusuario; 
 		}
-		cerrarconexion($link);
-	}
+		else
+		{
+			$_SESSION['iduser']	= -1;
+		}
+		
+	}cerrarconexion($link);
 
 	if($_SESSION['iduser'] != -1)
 	{

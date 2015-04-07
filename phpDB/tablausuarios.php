@@ -26,7 +26,7 @@ function insertUSUARIO($link, $nombre, $apellidos, $email, $pass, $foto)
 
 function getidusuariobyemailpass($link, $email, $pass)
 {
-	$query = "SELECT *" 
+	$query = "SELECT id" 
 		. " FROM usuarios"
 		. " WHERE email = '$email'"
 		. " and password = '$pass'";
@@ -87,7 +87,7 @@ function getfotousuariobyid($link, $id)
 {
 	$query = "SELECT *" 
 		. " FROM usuarios"
-		. " WHERE id = '$id'";
+		. " WHERE id = $id";
 	
 	//echo "<p>$query</p>";
 
@@ -110,6 +110,34 @@ function getfotousuariobyid($link, $id)
 	mysqli_free_result($resultado);
 
 	return $foto;
+}
+
+function getdatosusuariobyid($link, $id)
+{
+	$query = "SELECT *" 
+		. " FROM usuarios"
+		. " WHERE id = $id";
+	
+	//echo "<p>$query</p>";
+
+	$resultado = @mysqli_query($link, $query);
+
+	//echo "<P>Valor de resultado: $resultado</P>";
+
+	if($resultado)
+	{
+		if($fila = mysqli_fetch_assoc($resultado))
+		{
+			return $fila;
+		}
+	}
+
+	//echo "foto: $foto";
+
+	//liberar memoria del resultado
+	mysqli_free_result($resultado);
+
+	return false;
 }
 
 ?>
