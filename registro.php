@@ -11,7 +11,7 @@
 
 	//echo "<p>sesion:" . $_SESSION['iduser'] . "</p>";
 
-	if($_SESSION['iduser'] != -1)
+	if(isset($_SESSION['iduser']))
 	{
 		//echo "Dentro 1";
 		$link = abrirconexion();
@@ -97,15 +97,26 @@
 				?>
 				
 				<div class="col-xs-12 col-sm-12 col-md-9">
-					<label>
+					<?php
+					if(isset($_SESSION['iduser']))
+					{
+					?>
+						<label>
 						<?php
-						if($foto!="")  
-							echo "Cambia tu fotografia";
-						else
-							echo "Dejate ver, introduce tu fotografía";
+							if($foto!="")  
+								echo "Cambia tu fotografia";
+							else
+								echo "Dejate ver, introduce tu fotografía";
 						?>
-						<input type="file" accept="image/jpeg, image/png" id="pic" name="pic" class="form-control" value="">
-					</label>
+							<input type="file" accept="image/jpeg, image/png" id="pic" name="pic" class="form-control" value="">
+						</label>
+						<label>
+							Eliminar usuario
+							<input type="checkbox" id="eliminar" name="eliminar">
+						</label>
+					<?php
+					}
+					?>
 				</div>
 			</div>
 		</div>

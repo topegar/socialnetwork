@@ -8,8 +8,9 @@
 	/*si no existe la variable se crea y se fija a -1
 	valor que sirve de referencia para decir que 
 	ningún usuario ha intruducido su mail y password*/
-	if(!isset($_SESSION['iduser']))
+	/*if(!isset($_SESSION['iduser']))
 		$_SESSION['iduser'] = -1;	
+	*/
 
 	/*se ha hecho clic en "Cerrar sesion"*/
 	if(isset($_REQUEST["cerrar"]))
@@ -18,6 +19,9 @@
 
 		// Borra todas las variables de sesión
 		$_SESSION = array();
+		$_REQUEST = array();
+		$_POST = array();
+		$_GET = array();
 		// Borra la cookie que almacena la sesión
 				
 		// Borra la cookie que almacena la sesión
@@ -32,35 +36,38 @@
 		/*vuelvo a abrir otra sesion para tener la referencia de 
 		la variable iduser y así saber si alguien esta logado o no
 		*/
+		/*
 		session_start();
 		$_SESSION['iduser'] = -1;
+		*/
 	}
 
 
 	/*el usuario esta intentando logarse
 	hay que comprobar su mail y su password*/
-	if(isset($_REQUEST["mail"]) 	
-		&& isset($_REQUEST["password"]))
+	if(isset($_POST["mail"]) 	
+		&& isset($_POST["password"]))
 	{
-		$email = $_REQUEST["mail"];
-		$pass = $_REQUEST["password"];
+		$email = $_POST["mail"];
+		$pass = $_POST["password"];
 
 		//comprobar que el mail y el pass existen
 		$link = abrirconexion();
-		$idusuario = getidusuariobyemailpass($link, $email, $pass);
-		if($idusuario)
+		if($link)
 		{
-			//obtener datos del usuario
-			$_SESSION['iduser'] = $idusuario; 
+			$idusuario = getidusuariobyemailpass($link, $email, $pass);
+			if($idusuario)
+			{
+				//obtener datos del usuario
+				$_SESSION['iduser'] = $idusuario; 
+			}
+			cerrarconexion($link);	
 		}
-		else
-		{
-			$_SESSION['iduser']	= -1;
-		}
-		
-	}cerrarconexion($link);
+	}
 
-	if($_SESSION['iduser'] != -1)
+	$nombre="";
+	$foto="";
+	if(isset($_SESSION['iduser']))
 	{
 		
 		$link = abrirconexion();
@@ -108,12 +115,13 @@
 
 
 			<?php
-			if($_SESSION['iduser'] == -1)
+			if(!isset($_SESSION['iduser']))
 			{
 			?>
 
-			<form class="navbar-form navbar-left" role="search">
-		        <div class="form-group" onclick="return validarlogin()">
+			<form class="navbar-form navbar-left" role="search"
+			onclick="return validarlogin()" method="post" action="index.php">
+		        <div class="form-group" >
 					<input class="form-control" type="text" placeholder="e-mail" id="mail" name="mail">
 					<input class="form-control" type="password" placeholder="******" id="password" name="password">
 		        </div>

@@ -3,7 +3,7 @@
 function abrirconexion()
 {
 	$link = @mysqli_connect(
-		'localhost', // El servidor
+		'192.168.1.195',//'localhost', // El servidor
 		'webdb', // El usuario
 		'yYTVR7n23FCxPu7F', // La contraseña
 		'socialnetwork'); // La base de datos	

@@ -65,33 +65,40 @@ function validar_registro($nombre, $apellidos, $email, $emailrep, $pass, $passre
 	return true;
 }
 
+$nombre = "";
+$apellidos = "";	
+$email = "";
+$emailrep = "";
+$pass = "";	
+$passrep = "";
+$foto = "";
+$eliminar = false;
 
 //punto de entrada del codigo PHP
-if(isset($_POST['nombre']) && isset($_POST['apellidos'])
-	&& isset($_POST['email']) && isset($_POST['emailrep'])
-	&& isset($_POST['pass']) && isset($_POST['passrep']))
-{
-	$nombre = $_POST['nombre'];
-	$apellidos = $_POST['apellidos'];	
-	$email = $_POST['email'];
-	$emailrep = $_POST['emailrep'];
-	$pass = $_POST['pass'];	
-	$passrep = $_POST['passrep'];
-	$foto = "";
-	
-	echo "<p>Los datos bien</p>";
-}
-else{
-	$nombre = "";
-	$apellidos = "";	
-	$email = "";
-	$emailrep = "";
-	$pass = "";	
-	$passrep = "";
-	$foto = "";
 
-	echo "<p>Error en la recepcion de datos</p>";
-}
+if(isset($_POST['nombre']))
+	$nombre = $_POST['nombre'];
+
+if(isset($_POST['apellidos']))
+	$apellidos = $_POST['apellidos'];	
+
+if(isset($_POST['email']))	
+	$email = $_POST['email'];
+
+if(isset($_POST['emailrep']))
+	$emailrep = $_POST['emailrep'];
+
+if(isset($_POST['pass']))	
+	$pass = $_POST['pass'];	
+
+if(isset($_POST['passrep']))
+	$passrep = $_POST['passrep'];
+
+if(isset($_POST['eliminar']))
+	$eliminar = true;	
+
+	echo "<p>Los datos bien</p>";
+
 /*
 echo "<p>".$_FILES['pic']['error']."</p>";
 echo "<p>".$_FILES['pic']['type']."</p>";
@@ -132,29 +139,75 @@ else
 	$link = abrirconexion();
 	if($link)
 	{
-		//insertar una fila nueva en la tabla usuarios
-		$ok = insertUSUARIO($link, $nombre, $apellidos, $email, $pass, $foto);
-
-		if($ok)
-			echo "<p>Datos insertado correctamente</p>";
-		else
-			echo "<p>Error en la inserción de datos</p>";
-
-		echo "<P>Todo correcto</P>";
-
-		//recuperar el ID de la fila insertada 
-		//para asignarlo a la variable de session
-		$idusuario = getidusuariobyemailpass($link, $email, $pass);
-
-
-		echo "<P>Saltar a la página index.php con usuario logado</P>";
-		if($idusuario)
+		//si el usuario no esta registrado 
+		//insertar el usuario nuevo en la BD
+		if(!isset($_SESSION['iduser']))
 		{
-			echo "<P>Id del usuario registrado: $idusuario</P>";
-			$_SESSION['iduser'] = $idusuario;
-		}
+			//insertar una fila nueva en la tabla usuarios
+			$ok = insertUSUARIO($link, $nombre, $apellidos, $email, $pass, $foto);
 
-		header('Location: index.php');
+			if($ok)
+				echo "<p>Datos insertado correctamente</p>";
+			else
+				echo "<p>Error en la inserción de datos</p>";
+
+			echo "<P>Todo correcto</P>";
+
+			//recuperar el ID de la fila insertada 
+			//para asignarlo a la variable de session
+			$idusuario = getidusuariobyemailpass($link, $email, $pass);
+
+
+			echo "<P>Saltar a la página index.php con usuario logado</P>";
+			if($idusuario)
+			{
+				echo "<P>Id del usuario registrado: $idusuario</P>";
+				$_SESSION['iduser'] = $idusuario;
+			}
+
+			cerrarconexion($link);		
+			header('Location: index.php');
+		}
+		//si el usuario ya existe 
+		//modificar los datos que se reciban
+		else
+		{
+			if(!$eliminar)
+			{
+				//modificar una fila en la tabla usuarios
+				$ok = updateUSUARIO($link, $nombre, $apellidos, $email, $pass, $foto, $_SESSION['iduser']);
+
+				if($ok)
+					echo "<p>Datos modificados correctamente</p>";
+				else
+					echo "<p>Error en la modificacion de datos</p>";
+
+				echo "<P>Todo correcto</P>";
+
+
+				//echo "<P>Saltar a la página index.php con usuario logado</P>";
+				
+				cerrarconexion($link);		
+				header('Location: index.php');
+			}
+			else
+			{
+				echo "id de usuario: " . $_SESSION['iduser'];
+
+				//eliminar usuario
+				$ok = deleteUSUARIO($link, $_SESSION['iduser']);
+
+				if($ok)
+					echo "<p>Datos eliminados correctamente</p>";
+				else
+					echo "<p>Error en la eliminacion de datos</p>";
+
+				//echo "<P>Todo correcto</P>";
+
+				cerrarconexion($link);		
+				header('Location: index.php?cerrar=yes');
+			}
+		}
 	}
 	else
 	{

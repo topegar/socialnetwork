@@ -1,7 +1,5 @@
 <?php
 
-
-
 function insertUSUARIO($link, $nombre, $apellidos, $email, $pass, $foto)
 {
 //guardar los datos en la BD
@@ -9,6 +7,51 @@ function insertUSUARIO($link, $nombre, $apellidos, $email, $pass, $foto)
 		. " usuarios (nombre, apellidos, email, password, foto)"
 		. " VALUES ('$nombre','$apellidos','$email', '$pass', '$foto')";
 	
+	//echo "<p>$query</p>";
+
+	$resultado = @mysqli_query($link, $query);
+	if(!$resultado) 
+	{
+		echo "<p>Error al ejecutar la sentencia <b>$query</b>: " 
+		. mysqli_error($link)
+		. "</p>";
+		return false;
+	}
+
+
+	return true;
+}
+
+function updateUSUARIO($link, $nombre, $apellidos, $email, $pass, $foto, $idusuario)
+{
+//guardar los datos en la BD
+	$query = "UPDATE usuarios SET" 
+		. " nombre ='$nombre'" 
+		. ", apellidos = '$apellidos'"
+		. ", email = '$email'" 
+		. ", password = '$pass'"
+		. ", foto = '$foto'"
+		. " WHERE id = $idusuario"; 	
+	//echo "<p>$query</p>";
+
+	$resultado = @mysqli_query($link, $query);
+	if(!$resultado) 
+	{
+		echo "<p>Error al ejecutar la sentencia <b>$query</b>: " 
+		. mysqli_error($link)
+		. "</p>";
+		return false;
+	}
+
+
+	return true;
+}
+
+function deleteUSUARIO($link, $idusuario)
+{
+//guardar los datos en la BD
+	$query = "DELETE FROM usuarios" 
+		. " WHERE id = $idusuario"; 	
 	//echo "<p>$query</p>";
 
 	$resultado = @mysqli_query($link, $query);
