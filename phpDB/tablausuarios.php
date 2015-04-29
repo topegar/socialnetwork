@@ -183,4 +183,29 @@ function getdatosusuariobyid($link, $id)
 	return false;
 }
 
+function isIDUsuarioBD($link, $idusuario)
+{
+	$existe;
+	$query = "SELECT id" 
+		. " FROM usuarios"
+		. " WHERE id = $idusuario";
+
+	$resultado = @mysqli_query($link, $query);
+
+	//echo "<P>Valor de resultado: $resultado</P>";
+
+	$existe = false;
+	if($resultado)
+	{
+		if($fila = mysqli_fetch_assoc($resultado))
+		{
+			$existe = true;
+		}
+
+		mysqli_free_result($resultado);
+	}		
+
+	return $existe;
+}
+
 ?>

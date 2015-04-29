@@ -13,9 +13,16 @@
 	*/
 
 	/*se ha hecho clic en "Cerrar sesion"*/
-	if(isset($_REQUEST["cerrar"]))
+	$cerrar = isset($_REQUEST["cerrar"]);
+	if($cerrar)
 	{
         //echo "<p>Nombre de la sesion" . session_name() . "</p>";
+
+		//borra la cookie de recordar al usuario
+		if(isset($_COOKIE['recuerdame']))
+		{
+			setcookie('recuerdame', '', time() - 42000);
+		}
 
 		// Borra todas las variables de sesión
 		$_SESSION = array();
@@ -25,11 +32,11 @@
 		// Borra la cookie que almacena la sesión
 				
 		// Borra la cookie que almacena la sesión
-		if(isset($_COOKIE[session_name()])) {
-			setcookie(session_name(), '', time() - 42000, '/');
+		if(isset($_COOKIE[session_name()])) 
+		{
+			setcookie(session_name(), '', time() - 42000);
 		}
 		
-
 		// Finalmente, destruye la sesión
 		session_destroy();
 
@@ -42,6 +49,26 @@
 		*/
 	}
 
+	if(isset($_COOKIE['recuerdame']) 
+		&& !$cerrar)
+	{
+		$idusuario = $_COOKIE['recuerdame'];
+
+		//echo "cookie: $idusuario";
+		
+		//comprobar en la BD que la información guardada en la cookie es correcta, es decir, que el id de usuario existe
+		$link = abrirconexion();
+		if($link)
+		{
+			$idcorrecto = isIDUsuarioBD($link, $idusuario);
+			if($idcorrecto)
+			{
+				$_SESSION['iduser'] = $idusuario;
+			}
+			cerrarconexion($link);
+		}
+	}
+
 
 	/*el usuario esta intentando logarse
 	hay que comprobar su mail y su password*/
@@ -50,6 +77,11 @@
 	{
 		$email = $_POST["mail"];
 		$pass = $_POST["password"];
+
+		$recuerdame = false;
+		if(isset($_POST['recuerdame']))
+			$recuerdame = true;
+
 
 		//comprobar que el mail y el pass existen
 		$link = abrirconexion();
@@ -60,6 +92,11 @@
 			{
 				//obtener datos del usuario
 				$_SESSION['iduser'] = $idusuario; 
+				if($recuerdame)
+				{
+					setcookie('recuerdame', $idusuario, 
+						time() + 365*24*60*60);
+				}
 			}
 			cerrarconexion($link);	
 		}
@@ -71,15 +108,32 @@
 	{
 		
 		$link = abrirconexion();
+		if($link)
+		{
+			$nombre = getnombreusuariobyid($link, $_SESSION['iduser']);
+			$foto = getfotousuariobyid($link, $_SESSION['iduser']);
+			cerrarconexion($link);
+		}
+		
 
-		$nombre = getnombreusuariobyid($link, $_SESSION['iduser']);
-		$foto = getfotousuariobyid($link, $_SESSION['iduser']);
+		//si el login es correcto crear o aumentar la cookie de contador de visitas a la parte privada
+		$namecookie = "contador".$_SESSION['iduser'];
+		$caduca = time() + 365 * 24 * 60 * 60;
+		if(isset($_COOKIE[$namecookie]))
+		{
+			// Caduca en un año
+			setcookie($namecookie, $_COOKIE[$namecookie] + 1, $caduca);
+		}
+		else
+		{
+			// Caduca en un año
+			setcookie($namecookie, 1, $caduca);
+		}
 
-		/*$nombre = "Tomas";
-		$foto = "foto.jpg";*/
-
-		cerrarconexion($link);
+		//echo $_COOKIE[$namecookie];
 	}
+
+
 ?>
 
 <html>
@@ -98,7 +152,8 @@
 </head>
 <body>
 <div class="container">
-	<div class="navbar navbar-inverse navbar-fixed-top">
+	<!--navbar-inverse-->
+	<div class="navbar navbar-fixed-top">
 	  	<div class="container-fluid">
 		    <div class="navbar-header">
 			    <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -117,32 +172,41 @@
 			<?php
 			if(!isset($_SESSION['iduser']))
 			{
+				//echo "sin sesion";
 			?>
 
-			<form class="navbar-form navbar-left" role="search"
-			onclick="return validarlogin()" method="post" action="index.php">
-		        <div class="form-group" >
-					<input class="form-control" type="text" placeholder="e-mail" id="mail" name="mail">
-					<input class="form-control" type="password" placeholder="******" id="password" name="password">
-		        </div>
-		        <button type="submit" class="btn btn-default">Login</button>
-	      	</form>
+			<form class="navbar-form navbar-left" 
+			onsubmit="return validarlogin()" method="post" action="index.php">
+		    <div class="form-group" >
+				<input class="form-control" type="text" placeholder="e-mail" id="mail" name="mail">
+				<input class="form-control" type="password" placeholder="******" id="password" name="password">
+		        
+			    <button type="submit" class=" btn btn-default">Login</button>
 
+				<!--<span class="navbar-text">recuerdame</span>-->
+			</div>	
+		    <div class="form-group" >
+				<label>
+				<input  class="form-control" type="checkbox" id="recuerdame" name="recuerdame">
+				recuerdame
+				</label>
+		    </div>
+	      	</form>
 			<div>
 				<ul class="nav navbar-nav">
 			        <li>
 						<a href="registro.php">Registro</a>
 			        </li>
 			        <li>
-						<a href="#">Olvidaste tu contraseña?</a>
+						<a href="#">Contraseña?</a>
 			        </li>
 				</ul>
 			</div>
-
 			<?php 
 			}
 			else
 			{
+				//echo "Con sesion a tope";
 			?>
 		    <div>
 		      <ul class="nav navbar-nav">
@@ -160,6 +224,12 @@
 						//navbar-brand
 						echo "<li><img class='navbar-brand' src='"
 							.USER_FOLDER."/$foto'></li>";
+					}
+					if(isset($_COOKIE[$namecookie]))
+					{
+					?>
+					<li class="navbar-text">Visita: <?php echo $_COOKIE[$namecookie]?></li>
+					<?php 
 					}
 					?>
 					<li class=""><a href="registro.php" class="navbar-link">Hola <?php echo $nombre; ?></a></li>

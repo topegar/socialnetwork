@@ -113,10 +113,15 @@ if($_FILES['pic']['error'] == 0)
 		|| $_FILES['pic']['type'] == "image/png")
 	{
 
-		move_uploaded_file($_FILES['pic']['tmp_name'],
-			USER_FOLDER."/".$_FILES['pic']['name']);
+		$aleatorio = rand().rand().rand();
 
-		$foto = $_FILES['pic']['name'];
+		if(!is_dir(USER_FOLDER))
+			mkdir(USER_FOLDER);
+
+		move_uploaded_file($_FILES['pic']['tmp_name'],
+			USER_FOLDER."/".$aletatorio.$_FILES['pic']['name']);
+
+		$foto = $aleatoiro.$_FILES['pic']['name'];
 
 		//echo "<p>El archivo bien</p>";
 	}
