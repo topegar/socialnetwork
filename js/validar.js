@@ -101,3 +101,12 @@ function validar_registro()
 
 	return true;
 }
+
+function validarmaterial()
+{
+	var nombre = document.getElementById("nombre").value;
+	if(nombre.length<=0)
+		return false;
+	
+	return false;
+}
