@@ -21,4 +21,31 @@ function insertMATERIAL($link, $nombre, $descripcion, $url, $imagen, $fecha, $id
 
 	return true;
 }
+
+function getmaterialesbyidusuario($link, $idusuario)
+{
+	$query = "SELECT *" 
+		. " FROM materiales"
+		. " WHERE idusuario = $idusuario"
+		. " order by fechapublicacion desc";
+	
+	//echo "<p>$query</p>";
+
+	$resultado = @mysqli_query($link, $query);
+
+	//echo "<P>Valor de resultado: $resultado</P>";
+
+	if($resultado)
+	{
+			return $resultado;
+	}
+
+	//echo "foto: $foto";
+
+	//liberar memoria del resultado
+	mysqli_free_result($resultado);
+
+	return false;
+}
+
 ?>

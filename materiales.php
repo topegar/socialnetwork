@@ -1,5 +1,6 @@
 <?php
 	require_once("cabecera.inc");
+	require_once("phpDB/tablamateriales.php")
 ?>
 
 	<div class="row jumbotron center ">
@@ -14,7 +15,8 @@
 		<!-- lista de mis materiales con los comentarios -->
 		<div class="col-xs-12 col-sm-6 col-md-6 divmargin">
 			
-			<form  role="form" action="materiales_recibir.php" method="post" enctype="multipart/form-data">
+			<form  role="form" action="materiales_recibir.php" method="post" enctype="multipart/form-data"
+				accept-charset="utf-8">
 				<div class="form-group">
 					<label for="nombre">Nombre</label>
 					<input type="text" class="form-control" id="nombre" name="nombre" onsubmit="return validarmaterial()">
@@ -39,30 +41,43 @@
 			</form>
 
 			<?php 
-			for($i=0; $i<5; $i++)
+			$link = abrirconexion();
+			if($link)
 			{
-			?>
-			<div>
-				<h3>Titulo material</h3>
-				<p>Texto asociado la material bla bla bla bla bla bla 
-					bla bla bla bla bla bla bla bla bla bla bla bla 
-					bla bla bla bla bla bla bla bla bla bla bla bla
-					bla bla bla bla bla bla bla bla bla bla bla bla 
-				</p>
-					
-				<?php
-				for($j=0; $j<3; $j++)
+				$resultado = getmaterialesbyidusuario($link, $_SESSION['iduser']);
+				if($resultado)
 				{
-				?>
-				<div>
-					<h4>Autor del comentario</h4>
-					<p>Texto del comentario</p>
-				</div>
-				<?php
+					while($fila = mysqli_fetch_assoc($resultado))
+					{
+					?>
+					<div>
+					<h3><?php 
+						echo $fila['nombre'];
+						//echo utf8_encode($fila['nombre'])
+						?>
+					</h3>
+					<p>
+						<?php 
+						echo $fila['descripcion'];
+						//echo utf8_encode($fila['descripcion'])
+						?>
+					</p>
+						
+					<?php
+						for($j=0; $j<3; $j++)
+						{
+						?>
+						<div>
+							Autor del comentario
+							<p>Texto del comentario</p>
+						</div>
+						<?php
+						}
+						?>
+						</div>
+					<?php
+					}
 				}
-				?>
-			</div>
-			<?php
 			}
 			?>
 		</div>

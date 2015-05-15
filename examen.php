@@ -2,9 +2,11 @@
 	$a=1;
 	++$a;
 	$a*=$a;
-	echo "P1: " . $a--;
+	echo "P1: " . --$a;
+	echo " / " . $a;
 
 	$a = array();
+	$a[0] = 1;
 	if($a==null)
 	{
 		echo '<br>P5: verdadero';
@@ -17,7 +19,10 @@
 	$a=1;
 	function Test()
 	{
-		echo "P8: a=$a";
+		$a=0;
+		
 	}
 	Test();
+
+	echo "P8: a=$a";
 ?>

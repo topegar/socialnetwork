@@ -141,7 +141,7 @@
 	<title></title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-
+	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="./css/estilos.css">
 
@@ -179,7 +179,7 @@
 			onsubmit="return validarlogin()" method="post" action="index.php">
 		    <div class="form-group" >
 				<input class="form-control" type="text" placeholder="e-mail" id="mail" name="mail">
-				<input class="form-control" type="password" placeholder="******" id="password" name="password">
+				<input class="form-control" type="text" placeholder="******" id="password" name="password">
 		        
 			    <button type="submit" class=" btn btn-default">Login</button>
 

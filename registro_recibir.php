@@ -77,7 +77,7 @@ $eliminar = false;
 //punto de entrada del codigo PHP
 
 if(isset($_POST['nombre']))
-	$nombre = $_POST['nombre'];
+	$nombre = utf8_decode($_POST['nombre']);
 
 if(isset($_POST['apellidos']))
 	$apellidos = $_POST['apellidos'];	

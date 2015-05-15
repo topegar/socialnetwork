@@ -3,6 +3,8 @@ require_once("define.php");
 require_once("phpDB/conexion.php");
 require_once("phpDB/tablamateriales.php");
 
+header("Content-Type: text/html;charset=utf-8");
+
 session_start();
 
 $nombre = "";
@@ -14,12 +16,14 @@ $imagen = "";
 
 if(isset($_POST['nombre']))
 	$nombre = $_POST['nombre'];
+	//$nombre = utf8_decode($_POST['nombre']);
 
 if(isset($_POST['descripcion']))
 	$descripcion = $_POST['descripcion'];	
+	//$descripcion = utf8_decode($_POST['descripcion']);	
 
 if(isset($_POST['url']))	
-	$url = $_POST['url'];
+	$url = utf8_decode($_POST['url']);
 
 	echo "<p>Los datos bien</p>";
 
@@ -62,6 +66,10 @@ if(isset($_SESSION['iduser']) && $nombre != "")
 	{
 		//insertar una fila nueva en la tabla usuarios
 		$fecha = date("Ymd");
+
+		echo "<p>Nombre: $nombre </p>";
+		echo "<p>Descripcion: $descripcion </p>";
+
 		$ok = insertMATERIAL($link, $nombre, $descripcion, $url, $imagen, $fecha, $_SESSION['iduser']);
 
 		if($ok)
@@ -72,7 +80,7 @@ if(isset($_SESSION['iduser']) && $nombre != "")
 		echo "<P>Todo correcto</P>";
 
 		cerrarconexion($link);		
-		//header('Location: materiales.php');
+		header('Location: materiales.php');
 	}
 	else
 	{
