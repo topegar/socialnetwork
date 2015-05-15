@@ -27,7 +27,7 @@ function getmaterialesbyidusuario($link, $idusuario)
 	$query = "SELECT *" 
 		. " FROM materiales"
 		. " WHERE idusuario = $idusuario"
-		. " order by fechapublicacion desc";
+		. " order by id desc";
 	
 	//echo "<p>$query</p>";
 

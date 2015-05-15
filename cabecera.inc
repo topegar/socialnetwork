@@ -186,7 +186,7 @@
 				<!--<span class="navbar-text">recuerdame</span>-->
 			</div>	
 		    <div class="form-group" >
-				<label>
+				<label class="form-control navbar-inverse">
 				<input  class="form-control" type="checkbox" id="recuerdame" name="recuerdame">
 				recuerdame
 				</label>

@@ -35,7 +35,7 @@ function abrirconexion()
 	if($link)
 	{
 		$charset = mysqli_set_charset($link , "utf8");
-		echo "chaset: $charset";
+		//echo "chaset: $charset";
 	}
 
 	return $link;
